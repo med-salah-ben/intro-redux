@@ -1,23 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React , {useState}  from "react";
+import { useSelector  , useDispatch} from "react-redux";
+import {increment , decrement, incByValue} from "./JS/actions/action"
 
 function App() {
+  const dispatch = useDispatch();
+  const count = useSelector((state)=>state.countReducer.count);
+
+  const [value , setValue] = useState(0);
+
+  const handleCount = ()=>{
+    dispatch(increment())
+  }
+
+  const countByValue = (e)=>{
+    e.preventDefault()
+    dispatch(incByValue(parseInt(value)))
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={handleCount} >+</button>
+       <h3> {count}</h3>
+      <button onClick={()=>dispatch(decrement())} >-</button>
+      <form>
+        <input type="number" onChange={(e)=>setValue(e.target.value)} defaultValue={0} />
+        <button onClick={countByValue}>Plus</button>
+      </form>
     </div>
   );
 }
